@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sandenbanden — Treningskonkurranse</title>
+<title>Sandenbandens sommerinnspurt — Treningskonkurranse</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
@@ -188,11 +188,93 @@
   .week-bar-fill { height:100%; border-radius:2px; }
   .week-bar-val { font-size:9px; min-width:24px; text-align:right; font-weight:600; }
 
-  @media (max-width:700px) {
-    .dashboard { grid-template-columns:1fr; grid-template-rows:auto auto 1fr auto; }
-    .right-col { grid-row:auto; border-left:none; border-top:1px solid var(--border); max-height:50vh; }
+  /* MOBILE BOTTOM NAV */
+  .mobile-nav { display:none; }
+
+  @media (max-width:800px) {
+    html,body { overflow:auto; height:auto; min-height:100vh; min-height:100dvh; }
+    .dashboard {
+      grid-template-columns:1fr;
+      grid-template-rows:auto auto auto 1fr;
+      height:auto; min-height:100vh; min-height:100dvh;
+      overflow:visible;
+    }
+    .header { padding:12px 16px; gap:10px; flex-wrap:wrap; }
     .header-stats { display:none; }
-    html,body { overflow:auto; height:auto; }
+    .logo-title { font-size:16px; }
+    .logo-sub { font-size:9px; }
+    .logo-icon { width:34px; height:34px; font-size:16px; border-radius:10px; }
+
+    .tabs-row { grid-column:1; grid-row:2; padding:8px 12px; gap:4px; overflow-x:auto; -webkit-overflow-scrolling:touch; flex-wrap:nowrap; }
+    .tab-pill { padding:7px 14px; font-size:11px; white-space:nowrap; flex-shrink:0; }
+
+    .left-col { grid-column:1; grid-row:3; padding:0 12px 12px; min-height:280px; height:45vh; }
+    .chart-container { padding:14px; }
+
+    .right-col {
+      grid-column:1; grid-row:4;
+      border-left:none; border-top:1px solid var(--border);
+      max-height:none; height:auto;
+      overflow:visible;
+    }
+    .right-scroll { overflow:visible; }
+
+    .liga-section { padding:14px 14px 10px; }
+    .liga-card { padding:10px 12px; gap:8px; }
+    .liga-name { font-size:13px; }
+
+    .side-section-header { padding:12px 14px; }
+    .side-section-body { padding:0 14px 14px; }
+    .side-section-body.open { display:block; }
+
+    .form-input { padding:12px 14px; font-size:14px; border-radius:10px; }
+    select.form-input { padding-right:36px; }
+    .form-label { font-size:11px; margin-bottom:6px; }
+    .form-group { margin-bottom:12px; }
+
+    .act-row { padding:10px 0; gap:10px; }
+    .act-label { font-size:14px; }
+    .act-input { width:70px; padding:10px 8px; font-size:14px; border-radius:8px; }
+    .act-unit { font-size:12px; }
+
+    .points-preview { padding:16px; margin:16px 0 14px; border-radius:12px; }
+    .points-preview-val { font-size:32px; }
+    .btn-submit { padding:14px; font-size:14px; border-radius:12px; }
+    .btn-add-full { padding:12px; font-size:14px; border-radius:10px; }
+
+    .add-field { padding:12px 14px; font-size:14px; border-radius:10px; }
+    .add-field-row input, .add-field-row select { padding:12px; font-size:14px; border-radius:10px; }
+
+    .hist-card { padding:14px; margin-bottom:10px; }
+    .hist-card-name { font-size:14px; }
+    .hist-card-pts { font-size:16px; }
+    .hist-btn { width:32px; height:32px; font-size:14px; border-radius:8px; }
+
+    .pts-card { padding:14px; margin-bottom:10px; }
+    .pts-card-name { font-size:14px; }
+    .pts-input { width:64px; padding:10px 8px; font-size:14px; }
+    .pts-del { width:32px; height:32px; font-size:14px; }
+
+    .player-card { padding:14px; margin-bottom:10px; }
+    .player-name { font-size:15px; }
+    .player-del { width:32px; height:32px; font-size:14px; }
+    .player-color-block { width:44px; height:44px; }
+
+    .grid-2 { grid-template-columns:1fr; }
+
+    .act-pills { gap:6px; }
+    .act-pill { padding:6px 14px; font-size:11px; }
+
+    /* Week rows mobile */
+    .week-row { padding:8px 0; }
+    .week-label { font-size:11px; width:48px; }
+    .week-bar-val { font-size:10px; }
+  }
+
+  @media (max-width:400px) {
+    .logo-title { font-size:14px; }
+    .left-col { height:38vh; min-height:240px; }
+    .liga-card { flex-wrap:wrap; }
   }
 </style>
 </head>
@@ -204,8 +286,8 @@
     <div class="logo">
       <div class="logo-icon">🔥</div>
       <div class="logo-text">
-        <div class="logo-title">Sandenbanden</div>
-        <div class="logo-sub">Premium Fitness Analytics Dashboard</div>
+        <div class="logo-title">Sandenbandens sommerinnspurt</div>
+        <div class="logo-sub">En uformell men hard konkurranse frem mot sommeren</div>
       </div>
     </div>
     <div class="header-spacer"></div>
