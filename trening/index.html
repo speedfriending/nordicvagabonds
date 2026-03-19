@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Sandenbandens sommerinnspurt — Treningskonkurranse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%231e2e22' rx='16' width='100' height='100'/><text x='50' y='68' font-family='serif' font-size='52' font-weight='700' fill='%23f5efe4' text-anchor='middle'>NV</text></svg>">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<style>
+  :root {
+    --bg: #f5efe4;
+    --bg2: #ede6d9;
+    --bg3: #e5ded2;
+    --bg4: #ddd5c8;
+    --border: rgba(30,46,34,.1);
+    --text: #1a1f1b;
+    --text2: #3d5243;
+    --text3: #6e7d71;
+    --accent: #1e2e22;
+    --accent2: #3d5243;
+    --accent-bg: rgba(30,46,34,.08);
+    --orange: #b8893a;
+    --orange-bg: rgba(184,137,58,.12);
+    --blue: #3d5243;
+    --blue-bg: rgba(61,82,67,.1);
+    --red: #c45240;
+    --red-bg: rgba(196,82,64,.1);
+    --green: #3d7a5a;
+    --green-bg: rgba(61,122,90,.1);
+    --coral: #b8893a;
+    --gold: #b8893a;
+    --shadow: 0 2px 8px rgba(30,46,34,.08);
+    --radius: 14px;
+    --radius-sm: 10px;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { height:100%; overflow:hidden; overscroll-behavior-x:none; }
+  body { height:100%; font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); font-size:13px; overflow:hidden; overscroll-behavior-x:none; position:fixed; width:100%; touch-action:pan-y; -webkit-font-smoothing:antialiased; }
+
+  /* LAYOUT */
+  .dashboard { display:grid; grid-template-columns:1fr 340px; grid-template-rows:auto auto 1fr; height:100vh; height:100dvh; width:100%; overflow:hidden; position:relative; }
+
+  /* HEADER */
+  .header { grid-column:1/-1; display:flex; align-items:center; padding:14px 24px; gap:16px; border-bottom:1px solid var(--border); }
+  .logo { display:flex; align-items:center; gap:12px; }
+  .logo-icon { width:40px; height:40px; border-radius:12px; background:linear-gradient(135deg,#1e2e22,#3d5243); display:flex; align-items:center; justify-content:center; font-size:20px; box-shadow:0 4px 16px rgba(30,46,34,.2); }
+  .logo-text { display:flex; flex-direction:column; }
+  .logo-title { font-family:'Fraunces',serif; font-size:20px; font-weight:700; color:#1e2e22; letter-spacing:-.3px; }
+  .logo-sub { font-size:10px; color:var(--text3); font-weight:400; letter-spacing:.02em; font-style:italic; }
+  .header-spacer { flex:1; }
+  .header-stats { display:flex; gap:10px; }
+  .header-stat { display:flex; align-items:center; gap:10px; padding:8px 16px; background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-sm); }
+  .header-stat-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:14px; }
+  .header-stat-info { display:flex; flex-direction:column; }
+  .header-stat-label { font-size:10px; color:var(--text3); font-weight:500; }
+  .header-stat-val { font-size:16px; font-weight:700; font-family:'Fraunces',serif; }
+
+  /* TABS ROW */
+  .tabs-row { grid-column:1/2; grid-row:2/3; padding:14px 24px; display:flex; gap:6px; }
+  .tab-pill { display:flex; align-items:center; gap:6px; padding:8px 18px; border-radius:24px; border:1px solid var(--border); background:var(--bg2); color:var(--text2); font-size:12px; font-weight:600; cursor:pointer; transition:all .2s; }
+  .tab-pill:hover { border-color:rgba(255,255,255,.12); }
+  .tab-pill.active { background:#1e2e22; border-color:#1e2e22; color:#f5efe4; }
+  .tab-pill .tab-icon { font-size:13px; }
+
+  /* LEFT: CHART */
+  .left-col { grid-column:1/2; grid-row:3/4; padding:0 24px 20px; overflow:hidden; display:flex; flex-direction:column; min-width:0; }
+  .chart-container { flex:1; background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); padding:20px; display:flex; flex-direction:column; min-height:0; }
+  .chart-wrap { flex:1; position:relative; min-height:0; }
+  .chart-legend { display:flex; justify-content:center; gap:20px; padding-top:12px; font-size:11px; color:var(--text2); }
+  .chart-leg { display:flex; align-items:center; gap:6px; }
+  .chart-leg-dot { width:8px; height:8px; border-radius:50%; }
+
+  /* RIGHT SIDEBAR */
+  .right-col { grid-column:2/3; grid-row:2/4; border-left:1px solid var(--border); display:flex; flex-direction:column; overflow:hidden; }
+  .right-scroll { flex:1; overflow-y:auto; overflow-x:hidden; }
+  .right-scroll::-webkit-scrollbar { width:4px; }
+  .right-scroll::-webkit-scrollbar-thumb { background:var(--bg4); border-radius:2px; }
+
+  /* LIGA */
+  .liga-section { padding:18px 18px 14px; }
+  .liga-title { font-family:'Fraunces',serif; font-size:15px; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+  .liga-title-icon { font-size:18px; }
+  .liga-card { display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:var(--radius-sm); margin-bottom:6px; border:1px solid var(--border); transition:all .15s; }
+  .liga-card.first { background:rgba(184,137,58,.1); border-color:rgba(184,137,58,.2); }
+  .liga-card:not(.first) { background:var(--bg3); }
+  .liga-rank { width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; }
+  .liga-rank.r1 { background:#b8893a; color:#fff; }
+  .liga-rank.r2 { background:var(--bg4); color:var(--text2); }
+  .liga-rank.r3 { background:var(--bg4); color:var(--text2); }
+  .liga-stripe { width:3px; height:32px; border-radius:2px; }
+  .liga-info { flex:1; min-width:0; }
+  .liga-name { font-family:'Fraunces',serif; font-size:14px; font-weight:700; }
+  .liga-stats { font-size:10px; color:var(--text3); margin-top:1px; }
+  .liga-trophy { font-size:18px; color:var(--text3); }
+  .liga-card.first .liga-trophy { color:#b8893a; }
+
+  /* SIDEBAR SECTIONS */
+  .side-section { border-top:1px solid var(--border); }
+  .side-section-header { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; cursor:pointer; user-select:none; }
+  .side-section-title { font-family:'Fraunces',serif; font-size:14px; font-weight:700; display:flex; align-items:center; gap:8px; }
+  .side-section-icon { font-size:16px; }
+  .side-section-badge { font-size:10px; font-weight:600; padding:2px 8px; border-radius:10px; background:rgba(184,137,58,.12); color:#b8893a; }
+  .side-section-toggle { font-size:12px; color:var(--text3); transition:transform .2s; }
+  .side-section-toggle.open { transform:rotate(180deg); }
+  .side-section-body { padding:0 18px 16px; display:none; overflow:visible; }
+  .side-section-body.open { display:block; }
+
+  /* FORM */
+  .form-group { margin-bottom:10px; }
+  .form-label { font-size:10px; font-weight:600; color:var(--text3); text-transform:uppercase; letter-spacing:.06em; margin-bottom:5px; }
+  .form-input { width:100%; padding:9px 12px; background:var(--bg3); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:inherit; font-size:13px; outline:none; }
+  select.form-input { cursor:pointer; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239A9DB5' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:32px; -webkit-appearance:none; appearance:none; }
+  .form-input:focus { border-color:#b8893a; }
+  .form-input option { background:var(--bg3); color:var(--text); }
+  .act-row { display:flex; align-items:center; gap:8px; padding:7px 0; border-bottom:1px solid var(--border); }
+  .act-row:last-child { border-bottom:none; }
+  .act-label { flex:1; font-size:13px; font-weight:500; }
+  .act-input { width:60px; padding:6px 8px; background:var(--bg3); border:1px solid var(--border); border-radius:6px; color:var(--text); font-family:inherit; font-size:13px; text-align:center; outline:none; }
+  .act-input:focus { border-color:#b8893a; }
+  .act-unit { font-size:11px; color:var(--text3); width:32px; }
+  .points-preview { margin:14px 0 12px; padding:18px; border-radius:var(--radius-sm); background:linear-gradient(135deg,#1e2e22,#3d5243); text-align:center; }
+  .points-preview-val { font-family:'Fraunces',serif; font-size:28px; font-weight:700; color:#f5efe4; }
+  .points-preview-label { font-size:11px; color:rgba(245,239,228,.6); margin-top:2px; }
+  .btn-submit { width:100%; padding:12px; border:none; border-radius:var(--radius-sm); background:linear-gradient(135deg,#1e2e22,#3d5243); color:#f5efe4; font-family:inherit; font-size:13px; font-weight:700; cursor:pointer; transition:opacity .15s; }
+  .btn-submit:hover { opacity:.9; }
+
+  /* HISTORIKK — card style like Figma */
+  .hist-card { background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 14px; margin-bottom:8px; position:relative; }
+  .hist-card-header { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+  .hist-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .hist-card-name { font-weight:600; font-size:13px; }
+  .hist-card-date { font-size:11px; color:var(--text3); }
+  .hist-card-acts { font-size:11px; color:var(--text2); margin-bottom:4px; }
+  .hist-card-pts { font-size:14px; font-weight:700; display:flex; align-items:center; gap:4px; }
+  .hist-card-pts-icon { font-size:12px; }
+  .hist-card-actions { position:absolute; top:12px; right:12px; display:flex; gap:6px; }
+  .hist-btn { width:24px; height:24px; border-radius:6px; border:1px solid var(--border); background:transparent; color:var(--text3); font-size:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all .15s; }
+  .hist-btn:hover { border-color:#b8893a; color:var(--accent); }
+  .hist-btn.del:hover { border-color:var(--red); color:var(--red); }
+
+  /* POENG CONFIG — card style like Figma */
+  .pts-card { background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 14px; margin-bottom:8px; display:flex; align-items:center; gap:10px; }
+  .pts-card-info { flex:1; }
+  .pts-card-name { font-size:13px; font-weight:600; }
+  .pts-card-unit { font-size:10px; color:var(--text3); margin-top:1px; }
+  .pts-input { width:56px; padding:6px 8px; background:var(--bg4); border:1px solid var(--border); border-radius:6px; color:#b8893a; font-family:inherit; font-size:13px; font-weight:700; text-align:center; outline:none; }
+  .pts-input:focus { border-color:#b8893a; }
+  .pts-p { font-size:12px; color:var(--text3); font-weight:500; }
+  .pts-del { width:24px; height:24px; border-radius:6px; border:1px solid var(--border); background:transparent; color:var(--text3); font-size:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  .pts-del:hover { border-color:var(--red); color:var(--red); }
+  .add-section-title { font-size:12px; font-weight:600; color:var(--text2); margin-top:16px; margin-bottom:8px; }
+  .add-field { width:100%; padding:9px 12px; background:var(--bg3); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:inherit; font-size:13px; outline:none; margin-bottom:8px; }
+  .add-field:focus { border-color:#b8893a; }
+  .add-field-row { display:flex; gap:8px; margin-bottom:10px; }
+  .add-field-row input,.add-field-row select { flex:1; padding:9px 12px; background:var(--bg3); border:1px solid var(--border); border-radius:8px; color:var(--text); font-family:inherit; font-size:13px; outline:none; min-width:0; }
+  .add-field-row select { flex:0 0 auto; }
+  .btn-add-full { width:100%; padding:10px; border:none; border-radius:8px; background:linear-gradient(135deg,#1e2e22,#3d5243); color:#fff; font-family:inherit; font-size:13px; font-weight:700; cursor:pointer; transition:opacity .15s; }
+  .btn-add-full:hover { opacity:.9; }
+
+  /* PLAYERS — card style like Figma */
+  .player-card { background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 14px; margin-bottom:8px; display:flex; align-items:center; gap:12px; }
+  .player-color-block { width:40px; height:40px; border-radius:8px; flex-shrink:0; }
+  .player-name { flex:1; font-size:14px; font-weight:600; }
+  .player-del { width:24px; height:24px; border-radius:6px; border:1px solid var(--border); background:transparent; color:var(--text3); font-size:12px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  .player-del:hover { border-color:var(--red); color:var(--red); }
+
+  /* CHART views */
+  .chart-view { display:none; flex:1; flex-direction:column; min-height:0; }
+  .chart-view.active { display:flex; }
+
+  /* ACT PILLS for activity chart */
+  .act-pills { display:flex; flex-wrap:wrap; gap:4px; margin-bottom:10px; }
+  .act-pill { padding:4px 10px; border-radius:12px; border:1px solid var(--border); background:transparent; color:var(--text3); font-size:10px; cursor:pointer; font-family:inherit; font-weight:500; transition:all .15s; }
+  .act-pill:hover { border-color:rgba(255,255,255,.15); color:var(--text2); }
+  .act-pill.on { border-color:#b8893a; color:#b8893a; background:rgba(184,137,58,.1); }
+
+  /* WEEK GRID */
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; flex:1; }
+  .week-row { display:flex; align-items:center; gap:6px; padding:5px 0; border-bottom:1px solid var(--border); }
+  .week-row:last-child { border-bottom:none; }
+  .week-label { width:42px; font-size:10px; color:var(--text3); flex-shrink:0; }
+  .week-bar-wrap { flex:1; display:flex; flex-direction:column; gap:2px; }
+  .week-bar-row { display:flex; align-items:center; gap:5px; }
+  .week-bar-bg { flex:1; height:4px; background:var(--bg4); border-radius:2px; overflow:hidden; }
+  .week-bar-fill { height:100%; border-radius:2px; }
+  .week-bar-val { font-size:9px; min-width:24px; text-align:right; font-weight:600; }
+
+  /* MOBILE BOTTOM NAV */
+  .mobile-nav { display:none; }
+
+  @media (max-width:800px) {
+    html { overflow:hidden; }
+    body { overflow:hidden; position:fixed; width:100%; height:100%; }
+    .dashboard {
+      grid-template-columns:100%;
+      grid-template-rows:auto auto auto 1fr;
+      height:100vh; height:100dvh;
+      overflow-y:auto; overflow-x:hidden;
+      -webkit-overflow-scrolling:touch;
+      width:100%;
+    }
+    .header { padding:8px 12px; gap:6px; flex-wrap:nowrap; grid-column:1; }
+    .header-stats { display:none; }
+    .header-spacer { display:none; }
+    .logo { gap:6px; min-width:0; }
+    .logo-title { font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .logo-sub { font-size:8px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .logo-icon { width:28px; height:28px; font-size:13px; border-radius:7px; flex-shrink:0; }
+
+    .tabs-row { grid-column:1; grid-row:2; padding:4px 12px 8px; gap:4px; display:flex; flex-wrap:nowrap; }
+    .tab-pill { padding:6px 0; font-size:11px; white-space:nowrap; flex:1; justify-content:center; text-align:center; border-radius:20px; }
+    .tab-pill .tab-icon { display:none; }
+
+    .left-col { grid-column:1; grid-row:3; padding:0 10px 10px; min-height:200px; height:35vh; min-width:0; }
+    .chart-container { padding:10px; }
+    .chart-legend { padding-top:6px; font-size:10px; gap:12px; }
+
+    .right-col {
+      grid-column:1; grid-row:4;
+      border-left:none; border-top:1px solid var(--border);
+      max-height:none; height:auto;
+      overflow:visible;
+      width:100%; max-width:100%;
+    }
+    .right-scroll { overflow:visible; width:100%; max-width:100%; }
+    .right-col * { max-width:100%; }
+
+    .liga-section { padding:12px 12px 8px; }
+    .liga-card { padding:8px 10px; gap:8px; margin-bottom:4px; }
+    .liga-name { font-size:13px; }
+    .liga-stats { font-size:9px; }
+    .liga-rank { width:24px; height:24px; font-size:11px; border-radius:6px; }
+    .liga-stripe { height:24px; }
+    .liga-trophy { font-size:14px; }
+
+    .side-section { overflow:hidden; width:100%; }
+    .side-section-header { padding:10px 12px; }
+    .side-section-body { padding:0 12px 12px; overflow:hidden; width:100%; box-sizing:border-box; }
+    .side-section-body.open { display:block; }
+
+    .form-group { margin-bottom:10px; overflow:hidden; }
+    .form-input { padding:10px 12px; font-size:14px; border-radius:8px; width:100% !important; min-width:0; max-width:100% !important; -webkit-appearance:none; appearance:none; }
+    select.form-input { padding-right:34px; }
+    input[type="date"].form-input { -webkit-appearance:none; appearance:none; display:block; box-sizing:border-box !important; overflow:hidden; }
+    .form-label { font-size:10px; margin-bottom:4px; }
+    .form-group { margin-bottom:10px; }
+
+    .act-row { padding:8px 0; gap:8px; }
+    .act-label { font-size:13px; }
+    .act-input { width:64px; padding:8px 6px; font-size:14px; border-radius:6px; }
+    .act-unit { font-size:11px; }
+
+    .points-preview { padding:12px; margin:12px 0 10px; border-radius:10px; }
+    .points-preview-val { font-size:26px; }
+    .points-preview-label { font-size:10px; }
+    .btn-submit { padding:12px; font-size:13px; border-radius:10px; }
+    .btn-add-full { padding:10px; font-size:13px; border-radius:8px; }
+
+    .add-field { padding:10px 12px; font-size:13px; border-radius:8px; margin-bottom:6px; }
+    .add-field-row input, .add-field-row select { padding:10px; font-size:13px; border-radius:8px; }
+    .add-section-title { font-size:11px; margin-top:12px; margin-bottom:6px; }
+
+    .hist-card { padding:10px 12px; margin-bottom:6px; }
+    .hist-card-name { font-size:13px; }
+    .hist-card-pts { font-size:14px; }
+    .hist-btn { width:28px; height:28px; font-size:12px; border-radius:6px; }
+
+    .pts-card { padding:10px 12px; margin-bottom:6px; }
+    .pts-card-name { font-size:13px; }
+    .pts-input { width:56px; padding:8px 6px; font-size:13px; }
+    .pts-del { width:28px; height:28px; font-size:12px; }
+
+    .player-card { padding:10px 12px; margin-bottom:6px; }
+    .player-name { font-size:13px; }
+    .player-del { width:28px; height:28px; font-size:12px; }
+    .player-color-block { width:36px; height:36px; border-radius:6px; }
+
+    .grid-2 { grid-template-columns:1fr; }
+
+    .act-pills { gap:6px; }
+    .act-pill { padding:6px 14px; font-size:11px; }
+
+    /* Week rows mobile */
+    .week-row { padding:8px 0; }
+    .week-label { font-size:11px; width:48px; }
+    .week-bar-val { font-size:10px; }
+  }
+
+  @media (max-width:400px) {
+    .logo-title { font-size:13px; }
+    .left-col { height:32vh; min-height:200px; }
+    .tab-pill { padding:5px 8px; font-size:10px; }
+    .header { padding:8px 12px; }
+  }
+</style>
+</head>
+<body>
+<div class="dashboard">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo">
+      <div class="logo-icon">🔥</div>
+      <div class="logo-text">
+        <div class="logo-title">Sandenbandens sommerinnspurt</div>
+        <div class="logo-sub">En uformell men hard konkurranse frem mot sommeren</div>
+      </div>
+    </div>
+    <div class="header-spacer"></div>
+    <div class="header-stats">
+      <div class="header-stat">
+        <div class="header-stat-icon" style="background:var(--red-bg)">🏆</div>
+        <div class="header-stat-info">
+          <div class="header-stat-label">Leader</div>
+          <div class="header-stat-val" id="statLeader">—</div>
+        </div>
+      </div>
+      <div class="header-stat">
+        <div class="header-stat-icon" style="background:var(--blue-bg)">⚡</div>
+        <div class="header-stat-info">
+          <div class="header-stat-label">Total Points</div>
+          <div class="header-stat-val" id="statTotal">0</div>
+        </div>
+      </div>
+      <div class="header-stat">
+        <div class="header-stat-icon" style="background:var(--orange-bg)">🎯</div>
+        <div class="header-stat-info">
+          <div class="header-stat-label">Workouts</div>
+          <div class="header-stat-val" id="statWorkouts">0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs-row">
+    <button class="tab-pill active" onclick="goChart('oversikt',this)"><span class="tab-icon">📈</span> Oversikt</button>
+    <button class="tab-pill" onclick="goChart('daglig',this)"><span class="tab-icon">📅</span> Daglig</button>
+    <button class="tab-pill" onclick="goChart('aktivitet',this)"><span class="tab-icon">✨</span> Aktivitet</button>
+    <button class="tab-pill" onclick="goChart('uke',this)"><span class="tab-icon">🏅</span> Uke</button>
+  </div>
+
+  <!-- LEFT: CHARTS -->
+  <div class="left-col">
+    <div class="chart-view active" id="cv-oversikt">
+      <div class="chart-container">
+        <div class="chart-wrap"><canvas id="cumulChart"></canvas></div>
+        <div class="chart-legend" id="legendCumul"></div>
+      </div>
+    </div>
+    <div class="chart-view" id="cv-daglig">
+      <div class="chart-container">
+        <div class="chart-wrap"><canvas id="dailyChart"></canvas></div>
+        <div class="chart-legend" id="legendDaily"></div>
+      </div>
+    </div>
+    <div class="chart-view" id="cv-aktivitet">
+      <div class="chart-container">
+        <div class="act-pills" id="actPills"></div>
+        <div class="chart-wrap"><canvas id="actChart"></canvas></div>
+        <div class="chart-legend" id="legendAct"></div>
+      </div>
+    </div>
+    <div class="chart-view" id="cv-uke">
+      <div class="grid-2">
+        <div class="chart-container"><div class="chart-wrap"><canvas id="weekChart"></canvas></div></div>
+        <div class="chart-container" style="overflow-y:auto"><div id="weekRows"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT SIDEBAR -->
+  <div class="right-col">
+    <div class="right-scroll">
+
+      <!-- LIGA -->
+      <div class="liga-section">
+        <div class="liga-title"><span class="liga-title-icon">🏆</span> Liga</div>
+        <div id="leagueTable"></div>
+      </div>
+
+      <!-- LOGG ØKT -->
+      <div class="side-section">
+        <div class="side-section-header" data-toggle="section">
+          <div class="side-section-title"><span class="side-section-icon">➕</span> <span id="formTitle">Logg økt</span></div>
+          <span class="side-section-toggle open">▾</span>
+        </div>
+        <div class="side-section-body open" id="logSection">
+          <div class="form-group"><div class="form-label">Person</div><select class="form-input" id="fp"></select></div>
+          <div class="form-group"><div class="form-label">Dato</div><input type="date" class="form-input" id="fd"></div>
+          <div class="form-group"><div class="form-label">Aktiviteter</div><div id="actFields"></div></div>
+          <div class="points-preview"><div class="points-preview-val" id="fpreview">0.0</div><div class="points-preview-label">Total poeng</div></div>
+          <button class="btn-submit" id="formSubmitBtn" onclick="submitForm()">Logg økt</button>
+        </div>
+      </div>
+
+      <!-- HISTORIKK -->
+      <div class="side-section">
+        <div class="side-section-header" data-toggle="section">
+          <div class="side-section-title"><span class="side-section-icon">📋</span> Historikk <span class="side-section-badge" id="histCount">0</span></div>
+          <span class="side-section-toggle open">▾</span>
+        </div>
+        <div class="side-section-body open" id="histSection">
+          <div id="recentLog"></div>
+        </div>
+      </div>
+
+      <!-- POENG -->
+      <div class="side-section">
+        <div class="side-section-header" data-toggle="section">
+          <div class="side-section-title"><span class="side-section-icon">⚙️</span> Poengsystem</div>
+          <span class="side-section-toggle open">▾</span>
+        </div>
+        <div class="side-section-body open">
+          <div id="actConfigList"></div>
+          <div class="add-section-title">Ny aktivitet</div>
+          <input type="text" class="add-field" id="newActName" placeholder="Navn">
+          <div class="add-field-row">
+            <input type="text" id="newActUnit" placeholder="Enhet" value="km">
+            <input type="number" id="newActPts" placeholder="Poeng" value="1" min="0" step="0.1" style="flex:0 0 80px">
+          </div>
+          <button class="btn-add-full" onclick="addActivity()">+ Legg til</button>
+        </div>
+      </div>
+
+      <!-- DELTAKERE -->
+      <div class="side-section">
+        <div class="side-section-header" data-toggle="section">
+          <div class="side-section-title"><span class="side-section-icon">👥</span> Deltakere</div>
+          <span class="side-section-toggle open">▾</span>
+        </div>
+        <div class="side-section-body open">
+          <div id="playerList"></div>
+          <div class="add-section-title">Ny deltaker</div>
+          <input type="text" class="add-field" id="newPlayerName" placeholder="Navn">
+          <div style="display:flex;gap:8px">
+            <div id="newPlayerColorPreview" style="width:40px;height:40px;border-radius:8px;flex-shrink:0" class="player-color-block"></div>
+            <button class="btn-add-full" onclick="addPlayer()">+ Legg til</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+// SECTION TOGGLE
+document.addEventListener('click',function(e){
+  const header=e.target.closest('[data-toggle="section"]');
+  if(!header)return;
+  const body=header.nextElementSibling;
+  if(!body)return;
+  const toggle=header.querySelector('.side-section-toggle');
+  body.classList.toggle('open');
+  if(toggle)toggle.classList.toggle('open');
+});
+
+// --- FIREBASE ---
+firebase.initializeApp({
+  apiKey:"AIzaSyDN-lWEsjUYVlN6jO9fEeaxKzgLo2PI5Po",
+  authDomain:"treningskonkurranse.firebaseapp.com",
+  databaseURL:"https://treningskonkurranse-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId:"treningskonkurranse",
+  storageBucket:"treningskonkurranse.firebasestorage.app",
+  messagingSenderId:"667059906306",
+  appId:"1:667059906306:web:180229979589558782841b"
+});
+const db = firebase.database();
+
+// --- ACTIVITIES ---
+const DEFAULT_ACTIVITIES = [
+  {key:'run',label:'Løping',unit:'km',pts:10},{key:'bike',label:'Sykling',unit:'km',pts:3},
+  {key:'swim',label:'Svømming',unit:'km',pts:20},{key:'push',label:'Pushups',unit:'rep',pts:0.5},
+  {key:'pull',label:'Pullups',unit:'rep',pts:1.5},{key:'sit',label:'Situps',unit:'rep',pts:0.3},
+  {key:'weight',label:'Vekttrening',unit:'min',pts:0.8},{key:'plank',label:'Planke',unit:'min',pts:5},
+  {key:'healthy',label:'Sunn dag',unit:'stk',pts:10},
+];
+let activities = DEFAULT_ACTIVITIES.map(a=>({...a}));
+function saveActivities(a){db.ref('activities').set(a);}
+function pts(e){return activities.reduce((s,a)=>s+(e[a.key]||0)*a.pts,0);}
+
+const PALETTE = [
+  {color:'#1e2e22',bg:'rgba(30,46,34,.1)'},{color:'#b8893a',bg:'rgba(184,137,58,.1)'},
+  {color:'#3d5243',bg:'rgba(61,82,67,.1)'},{color:'#c45240',bg:'rgba(196,82,64,.1)'},
+  {color:'#6e7d71',bg:'rgba(110,125,113,.1)'},{color:'#d4a558',bg:'rgba(212,165,88,.1)'},
+  {color:'#2a4a32',bg:'rgba(42,74,50,.1)'},{color:'#8b6b2e',bg:'rgba(139,107,46,.1)'},
+];
+function pal(i){return PALETTE[i%PALETTE.length];}
+
+// --- PLAYERS ---
+const DEFAULT_PLAYERS = [{id:'p1',name:'Viktor'},{id:'p2',name:'Sølve'}];
+let players = DEFAULT_PLAYERS.map(p=>({...p}));
+function savePlayers(p){db.ref('players').set(p);}
+function pName(id){return(players.find(p=>p.id===id)||{}).name||id;}
+function pIdx(id){return players.findIndex(p=>p.id===id);}
+
+// --- DATA ---
+let data=[],charts={},idCounter=Date.now(),editingId=null;
+
+function getDateRange(){
+  if(!data.length)return[];
+  const ds=data.map(d=>d.date).sort(),s=new Date(ds[0]),e=new Date(ds[ds.length-1]),r=[];
+  for(let d=new Date(s);d<=e;d.setDate(d.getDate()+1))r.push(d.toISOString().slice(0,10));
+  return r;
+}
+function fmtDate(s){return new Date(s+'T00:00:00').toLocaleDateString('nb-NO',{day:'numeric',month:'short'});}
+function fmtDateShort(s){return new Date(s+'T00:00:00').toLocaleDateString('nb-NO',{day:'numeric',month:'short'}).replace('.','');}
+function getWeek(ds){const d=new Date(ds+'T00:00:00');d.setDate(d.getDate()+3-(d.getDay()+6)%7);const w1=new Date(d.getFullYear(),0,4);return'Uke '+(1+Math.round(((d-w1)/86400000-3+(w1.getDay()+6)%7)/7));}
+
+const GC='rgba(30,46,34,.06)',TC='rgba(30,46,34,.4)';
+function mkChart(id,cfg){if(charts[id])charts[id].destroy();const el=document.getElementById(id);if(el)charts[id]=new Chart(el,cfg);}
+const baseOpts={responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e2e22',borderColor:'rgba(245,239,228,.15)',borderWidth:1,titleColor:'rgba(245,239,228,.6)',bodyColor:'#f5efe4',padding:10,cornerRadius:8,titleFont:{size:11,family:'Inter'},bodyFont:{size:12,family:'Inter',weight:600}}},scales:{x:{grid:{color:GC,drawTicks:false},ticks:{color:TC,font:{size:10,family:'Inter'},maxRotation:0,autoSkip:true,padding:6},border:{display:false}},y:{grid:{color:GC,drawTicks:false},ticks:{color:TC,font:{size:10},padding:8},border:{display:false},beginAtZero:true}}};
+function deepMerge(a,b){const r={...a};for(const k in b){if(b[k]&&typeof b[k]==='object'&&!Array.isArray(b[k]))r[k]=deepMerge(a[k]||{},b[k]);else r[k]=b[k];}return r;}
+
+function buildLegend(id){document.getElementById(id).innerHTML=players.map((p,i)=>`<span class="chart-leg"><span class="chart-leg-dot" style="background:${pal(i).color}"></span>${p.name}</span>`).join('');}
+function buildDS(dpp,type){return players.map((p,i)=>({label:p.name,data:dpp[p.id]||[],borderColor:pal(i).color,backgroundColor:pal(i).bg,borderWidth:2.5,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:pal(i).color,pointBorderColor:pal(i).color,tension:.35,fill:true,...(type==='act'?{spanGaps:false}:{})}));}
+
+// HEADER STATS
+function updateStats(){
+  const totals=players.map(p=>({name:p.name,total:Math.round(data.filter(e=>e.p===p.id).reduce((a,e)=>a+pts(e),0))})).sort((a,b)=>b.total-a.total);
+  document.getElementById('statLeader').textContent=totals[0]?.name||'—';
+  document.getElementById('statTotal').textContent=Math.round(data.reduce((a,e)=>a+pts(e),0)).toLocaleString('nb-NO');
+  document.getElementById('statWorkouts').textContent=data.length;
+}
+
+// LEAGUE
+function renderLeague(){
+  const totals=players.map((p,i)=>({...p,idx:i,total:Math.round(data.filter(e=>e.p===p.id).reduce((a,e)=>a+pts(e),0)),count:data.filter(e=>e.p===p.id).length})).sort((a,b)=>b.total-a.total);
+  document.getElementById('leagueTable').innerHTML=totals.map((t,rank)=>{
+    const c=pal(t.idx).color;
+    const avg=t.count?Math.round(t.total/t.count*10)/10:0;
+    return`<div class="liga-card${rank===0?' first':''}">
+      <div class="liga-rank r${rank+1}">${rank+1}</div>
+      <div class="liga-stripe" style="background:${c}"></div>
+      <div class="liga-info">
+        <div class="liga-name">${t.name}</div>
+        <div class="liga-stats">${t.total} p · ${t.count} økter · Ø ${avg}</div>
+      </div>
+      <div class="liga-trophy">🏅</div>
+    </div>`;
+  }).join('');
+}
+
+// CHARTS
+function renderCumul(){const days=getDateRange();if(!days.length)return;const pp={};players.forEach(p=>{let c=0;pp[p.id]=days.map(day=>{data.filter(e=>e.date===day&&e.p===p.id).forEach(e=>c+=pts(e));return Math.round(c*10)/10;});});buildLegend('legendCumul');mkChart('cumulChart',{type:'line',data:{labels:days.map(d=>fmtDateShort(d)),datasets:buildDS(pp,'cumul')},options:deepMerge(baseOpts,{plugins:{tooltip:{callbacks:{label:c=>`  ${c.dataset.label} : ${c.parsed.y}`}}}})});}
+function renderDaily(){const days=getDateRange();if(!days.length)return;const pp={};players.forEach(p=>{pp[p.id]=days.map(d=>Math.round(data.filter(e=>e.date===d&&e.p===p.id).reduce((a,e)=>a+pts(e),0)*10)/10);});buildLegend('legendDaily');mkChart('dailyChart',{type:'line',data:{labels:days.map(d=>fmtDateShort(d)),datasets:buildDS(pp,'daily')},options:deepMerge(baseOpts,{plugins:{tooltip:{callbacks:{label:c=>c.parsed.y>0?`  ${c.dataset.label}: ${c.parsed.y}p`:null}}}})});}
+let currentAct='run';
+function renderActPills(){const c=document.getElementById('actPills');c.innerHTML='';activities.forEach(a=>{const el=document.createElement('button');el.className='act-pill'+(a.key===currentAct?' on':'');el.textContent=a.label;el.onclick=()=>{currentAct=a.key;renderActPills();renderActChart();};c.appendChild(el);});}
+function renderActChart(){const days=getDateRange();if(!days.length)return;const def=activities.find(a=>a.key===currentAct);if(!def)return;const pp={};players.forEach(p=>{pp[p.id]=days.map(d=>{const v=data.filter(e=>e.date===d&&e.p===p.id).reduce((a,e)=>a+(e[def.key]||0),0);return v||null;});});buildLegend('legendAct');mkChart('actChart',{type:'line',data:{labels:days.map(d=>fmtDateShort(d)),datasets:buildDS(pp,'act')},options:deepMerge(baseOpts,{plugins:{tooltip:{callbacks:{label:c=>c.parsed.y===null?null:`  ${c.dataset.label}: ${c.parsed.y} ${def.unit}`}}}})});}
+function renderWeek(){const weeks={};data.forEach(e=>{const w=getWeek(e.date);if(!weeks[w]){weeks[w]={};players.forEach(p=>weeks[w][p.id]=0);}if(!weeks[w][e.p])weeks[w][e.p]=0;weeks[w][e.p]+=pts(e);});const wl=Object.keys(weeks).sort(),pp={};players.forEach(p=>{pp[p.id]=wl.map(w=>Math.round(weeks[w][p.id]||0));});mkChart('weekChart',{type:'line',data:{labels:wl,datasets:buildDS(pp,'week')},options:deepMerge(baseOpts,{scales:{x:{ticks:{autoSkip:false,maxRotation:0}}}})});const wrap=document.getElementById('weekRows');wrap.innerHTML='';const mx=Math.max(...wl.flatMap(w=>players.map(p=>weeks[w][p.id]||0)),1);wl.forEach(w=>{const row=document.createElement('div');row.className='week-row';row.innerHTML=`<div class="week-label">${w}</div><div class="week-bar-wrap">${players.map((p,i)=>{const v=Math.round(weeks[w][p.id]||0);return`<div class="week-bar-row"><div class="week-bar-bg"><div class="week-bar-fill" style="width:${v/mx*100}%;background:${pal(i).color}"></div></div><div class="week-bar-val" style="color:${pal(i).color}">${v}p</div></div>`;}).join('')}</div>`;wrap.appendChild(row);});}
+
+// ACTIVITY FIELDS
+function buildForm(){
+  document.getElementById('fp').innerHTML=players.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+  document.getElementById('actFields').innerHTML=activities.map(a=>
+    `<div class="act-row"><div class="act-label">${a.label}</div><input class="act-input" type="number" id="f_${a.key}" placeholder="0" min="0" step="0.1" oninput="updatePreview()"><div class="act-unit">${a.unit}</div></div>`
+  ).join('');
+}
+window.updatePreview=function(){
+  const obj={};activities.forEach(a=>{obj[a.key]=parseFloat(document.getElementById('f_'+a.key)?.value)||0;});
+  const p=pts(obj);
+  document.getElementById('fpreview').textContent=p>0?Math.round(p*10)/10:'0.0';
+};
+
+// SUBMIT
+window.submitForm=function(){
+  const date=document.getElementById('fd').value;if(!date){alert('Velg en dato');return;}
+  const pid=document.getElementById('fp').value;
+  const entry={p:pid,date,name:pName(pid)+' økt'};
+  activities.forEach(a=>{const v=parseFloat(document.getElementById('f_'+a.key)?.value)||0;if(v)entry[a.key]=v;});
+  if(editingId){entry.id=editingId;db.ref('entries/'+editingId).set(entry);editingId=null;document.getElementById('formTitle').textContent='Logg økt';document.getElementById('formSubmitBtn').textContent='Logg økt';}
+  else{entry.id='u'+(++idCounter).toString(36);db.ref('entries/'+entry.id).set(entry);}
+  activities.forEach(a=>{const el=document.getElementById('f_'+a.key);if(el)el.value='';});
+  document.getElementById('fpreview').textContent='0.0';
+};
+window.editEntry=function(id){
+  const entry=data.find(e=>e.id===id);if(!entry)return;
+  editingId=id;
+  document.getElementById('formTitle').textContent='Rediger økt';
+  document.getElementById('formSubmitBtn').textContent='Lagre endring';
+  document.getElementById('fp').value=entry.p;
+  document.getElementById('fd').value=entry.date;
+  activities.forEach(a=>{const el=document.getElementById('f_'+a.key);if(el)el.value=entry[a.key]||'';});
+  updatePreview();
+  // Open log section
+  const body=document.getElementById('logSection');body.classList.add('open');
+  body.previousElementSibling.querySelector('.side-section-toggle').classList.add('open');
+};
+window.deleteEntry=function(id){db.ref('entries/'+id).remove();};
+
+// HISTORIKK
+function getEntryActivities(e){
+  return activities.filter(a=>(e[a.key]||0)>0).map(a=>a.label).join(', ')||'Økt';
+}
+function renderRecent(){
+  const sorted=[...data].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,20);
+  document.getElementById('histCount').textContent=data.length;
+  document.getElementById('recentLog').innerHTML=sorted.map(e=>{
+    const p=Math.round(pts(e)*10)/10,pi=pIdx(e.p),c=pal(pi>=0?pi:0).color;
+    return`<div class="hist-card">
+      <div class="hist-card-actions"><button class="hist-btn" onclick="editEntry('${e.id}')">✎</button><button class="hist-btn del" onclick="deleteEntry('${e.id}')">🗑</button></div>
+      <div class="hist-card-header"><div class="hist-dot" style="background:${c}"></div><div class="hist-card-name" style="color:${c}">${pName(e.p)}</div></div>
+      <div class="hist-card-date">${fmtDateShort(e.date)}</div>
+      <div class="hist-card-acts">${getEntryActivities(e)}</div>
+      <div class="hist-card-pts" style="color:${c}"><span class="hist-card-pts-icon">✦</span> ${p} p</div>
+    </div>`;
+  }).join('');
+}
+
+// ACT CONFIG
+function renderActConfig(){
+  document.getElementById('actConfigList').innerHTML=activities.map((a,i)=>
+    `<div class="pts-card">
+      <div class="pts-card-info"><div class="pts-card-name">${a.label}</div><div class="pts-card-unit">${a.unit}</div></div>
+      <input class="pts-input" type="number" value="${a.pts}" step="0.1" min="0" onchange="updateActPts(${i},this.value)">
+      <span class="pts-p">p</span>
+      ${activities.length>3?`<button class="pts-del" onclick="removeActivity(${i})">🗑</button>`:''}
+    </div>`
+  ).join('');
+}
+window.updateActPts=function(i,val){activities[i].pts=parseFloat(val)||0;saveActivities(activities);};
+window.removeActivity=function(i){if(activities.length<=3)return;activities.splice(i,1);saveActivities(activities);};
+window.addActivity=function(){
+  const nameEl=document.getElementById('newActName'),unitEl=document.getElementById('newActUnit'),ptsEl=document.getElementById('newActPts');
+  const label=nameEl.value.trim();if(!label)return;
+  activities.push({key:label.toLowerCase().replace(/[^a-z0-9]/g,'')+'_'+Date.now().toString(36),label,unit:unitEl.value,pts:parseFloat(ptsEl.value)||1});
+  saveActivities(activities);nameEl.value='';ptsEl.value='1';
+};
+
+// PLAYERS
+function renderPlayerList(){
+  document.getElementById('playerList').innerHTML=players.map((p,i)=>{
+    return`<div class="player-card"><div class="player-color-block" style="background:${pal(i).color}"></div><div class="player-name">${p.name}</div>${players.length>2?`<button class="player-del" onclick="removePlayer('${p.id}')">🗑</button>`:''}</div>`;
+  }).join('');
+  // Update new player color preview
+  const preview=document.getElementById('newPlayerColorPreview');
+  if(preview) preview.style.background=pal(players.length).color;
+}
+window.addPlayer=function(){const input=document.getElementById('newPlayerName'),name=input.value.trim();if(!name)return;players.push({id:'p'+Date.now().toString(36),name});savePlayers(players);input.value='';};
+window.removePlayer=function(id){if(players.length<=2)return;players=players.filter(p=>p.id!==id);savePlayers(players);data.filter(e=>e.p===id).forEach(e=>db.ref('entries/'+e.id).remove());};
+
+// TABS
+window.goChart=function(id,btn){
+  document.querySelectorAll('.chart-view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.tab-pill').forEach(b=>b.classList.remove('active'));
+  document.getElementById('cv-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='aktivitet'){renderActPills();renderActChart();}
+  if(id==='uke')renderWeek();
+  if(id==='daglig')renderDaily();
+  if(id==='oversikt')renderCumul();
+};
+
+function renderAll(){updateStats();renderLeague();renderCumul();renderDaily();renderRecent();renderActConfig();renderPlayerList();
+  if(document.getElementById('cv-aktivitet').classList.contains('active')){renderActPills();renderActChart();}
+  if(document.getElementById('cv-uke').classList.contains('active'))renderWeek();
+}
+
+// --- FIREBASE LISTENERS ---
+let initialized=false;
+db.ref('entries').on('value',snap=>{const v=snap.val();data=v?Object.values(v).sort((a,b)=>(a.date||'').localeCompare(b.date||'')):[];if(initialized)renderAll();});
+db.ref('players').on('value',snap=>{const v=snap.val();if(v)players=Array.isArray(v)?v:Object.values(v);if(initialized){buildForm();renderAll();}});
+db.ref('activities').on('value',snap=>{const v=snap.val();if(v)activities=Array.isArray(v)?v:Object.values(v);if(initialized){buildForm();renderAll();}});
+
+// INIT
+try { document.getElementById('fd').value=new Date().toISOString().slice(0,10); } catch(e){}
+// Wait for first data load, then initialize
+db.ref('entries').once('value').then(()=>{
+  initialized=true;
+  try { buildForm();renderActPills();renderAll(); } catch(e){ console.error('Init error:',e); }
+}).catch(e=>{ console.error('Firebase load error:',e); initialized=true; try{buildForm();renderActPills();renderAll();}catch(e2){} });
+</script>
+</body>
+</html>
