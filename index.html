@@ -198,6 +198,24 @@ a { text-decoration:none; }
   padding:.35rem .9rem; border-radius:100px;
 }
 
+/* ─── PHILOSOPHY ──────────────────────── */
+.philosophy { border-top:1px solid var(--line); }
+.philosophy-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:3rem;
+}
+.philosophy-number {
+  display:block; font-family:'Fraunces',serif;
+  font-size:.85rem; font-weight:700; color:var(--gold);
+  margin-bottom:1rem;
+}
+.philosophy-item h3 {
+  font-family:'Fraunces',serif; font-size:1.3rem; font-weight:700;
+  color:var(--forest); margin-bottom:.65rem; line-height:1.2;
+}
+.philosophy-item p {
+  font-size:.92rem; line-height:1.75; color:var(--muted);
+}
+
 /* ─── DIVIDER ─────────────────────────── */
 hr.nv-rule { border:none; border-top:1px solid var(--line); }
 
@@ -371,6 +389,7 @@ hr.nv-rule { border:none; border-top:1px solid var(--line); }
   .hero-img { height:55vw; }
   .nv-wrap { padding:0 2rem; }
   .about-grid { grid-template-columns:1fr; gap:2.5rem; }
+  .philosophy-grid { grid-template-columns:1fr; gap:2.5rem; }
   .services-list { grid-template-columns:1fr 1fr; gap:1rem; }
   .profiles { grid-template-columns:1fr 1fr; }
   .services-head { flex-direction:column; align-items:flex-start; }
@@ -410,8 +429,8 @@ hr.nv-rule { border:none; border-top:1px solid var(--line); }
 <section class="hero">
   <div class="hero-text">
     <span class="hero-tag">Konsulent & forretningsutvikling</span>
-    <h1>Vi bygger<br><em>det som<br>betyr noe.</em></h1>
-    <p class="hero-body">Et skandinavisk byrå med bred kompetanse — jurister, økonomer, markedsførere og psykologer som jobber mot ett mål.</p>
+    <h1>Vi vandrer<br><em>for å bygge<br>noe varig.</em></h1>
+    <p class="hero-body">Et tverrfaglig team som har valgt å gjøre ting på vår måte — med jus, økonomi, psykologi og markedsføring under ett tak. Fra Vestnes til hele Skandinavia.</p>
     <a href="#kontakt" class="hero-cta">Ta kontakt</a>
   </div>
   <div class="hero-img">
@@ -429,9 +448,9 @@ hr.nv-rule { border:none; border-top:1px solid var(--line); }
         <div class="monogram">NV</div>
       </div>
       <div class="about-main nv-reveal">
-        <h2>Tverrfaglig lag.<br><em>Felles retning.</em></h2>
-        <p>Nordic Vagabonds AS er et lite konsulent- og forretningsutviklingsbyrå med bred bakgrunn. Teamet vårt dekker jus, økonomi, helse, psykologi og markedsføring — vi møter oppdraget der det er.</p>
-        <p>Vi tror den beste rådgivningen kommer fra folk som tør å utfordre, bygge og levere i samme åndedrag.</p>
+        <h2>Ulike bakgrunner.<br><em>Samme retning.</em></h2>
+        <p>Vi kaller oss vagabonder fordi vi aldri har fulgt én rett linje. Teamet samler folk fra jus, økonomi, helse, psykologi og markedsføring — mennesker som har vandret, lært og bygd på tvers av bransjer.</p>
+        <p>Det gjør oss vanskelige å putte i bås, men enkle å samarbeide med. Vi møter oppdraget der det er — ikke der det passer oss.</p>
         <div class="about-img">
           <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&q=80" alt="Workshop — Nordic Vagabonds" loading="lazy">
         </div>
@@ -444,6 +463,29 @@ hr.nv-rule { border:none; border-top:1px solid var(--line); }
           <span class="tag">Forskning</span>
           <span class="tag">Prosjektledelse</span>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FILOSOFI -->
+<section class="nv-section philosophy">
+  <div class="nv-wrap">
+    <div class="philosophy-grid">
+      <div class="philosophy-item nv-reveal">
+        <span class="philosophy-number">01</span>
+        <h3>Utforsk først</h3>
+        <p>Vi tror de beste løsningene kommer fra folk som tør å stille spørsmål før de gir svar.</p>
+      </div>
+      <div class="philosophy-item nv-reveal">
+        <span class="philosophy-number">02</span>
+        <h3>Bygg på tvers</h3>
+        <p>Én fagdisiplin alene løser sjelden hele problemet. Vi kobler kompetanse som vanligvis ikke snakker sammen.</p>
+      </div>
+      <div class="philosophy-item nv-reveal">
+        <span class="philosophy-number">03</span>
+        <h3>Lever noe varig</h3>
+        <p>Ikke rapporter som samler støv — men løsninger som overlever oss og skaper verdi over tid.</p>
       </div>
     </div>
   </div>
@@ -571,6 +613,7 @@ hr.nv-rule { border:none; border-top:1px solid var(--line); }
   <span>&copy; 2026 Nordic Vagabonds AS</span>
   <span>Org.nr. 920 812 848</span>
   <span>Skaperne bak <a href="https://speedfriending.no" target="_blank" rel="noopener" style="color:rgba(245,239,228,.45); border-bottom:1px solid rgba(245,239,228,.15);">Speedfriending</a></span>
+  <span><a href="personvern.html" style="color:rgba(245,239,228,.35); border-bottom:1px solid rgba(245,239,228,.1);">Personvernerklæring</a></span>
 </footer>
 
 <script>
