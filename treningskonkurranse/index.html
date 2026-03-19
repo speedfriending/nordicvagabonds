@@ -201,17 +201,20 @@
       overflow-y:auto; overflow-x:hidden;
       -webkit-overflow-scrolling:touch;
     }
-    .header { padding:12px 16px; gap:10px; flex-wrap:wrap; }
+    .header { padding:10px 14px; gap:8px; flex-wrap:nowrap; }
     .header-stats { display:none; }
-    .logo-title { font-size:16px; }
-    .logo-sub { font-size:9px; }
-    .logo-icon { width:34px; height:34px; font-size:16px; border-radius:10px; }
+    .logo { gap:8px; }
+    .logo-title { font-size:14px; }
+    .logo-sub { font-size:8px; }
+    .logo-icon { width:30px; height:30px; font-size:14px; border-radius:8px; }
 
-    .tabs-row { grid-column:1; grid-row:2; padding:8px 12px; gap:4px; overflow-x:auto; -webkit-overflow-scrolling:touch; flex-wrap:nowrap; }
-    .tab-pill { padding:7px 14px; font-size:11px; white-space:nowrap; flex-shrink:0; }
+    .tabs-row { grid-column:1; grid-row:2; padding:6px 14px; gap:6px; display:flex; flex-wrap:nowrap; }
+    .tab-pill { padding:6px 12px; font-size:11px; white-space:nowrap; flex:1; justify-content:center; text-align:center; }
+    .tab-pill .tab-icon { display:none; }
 
-    .left-col { grid-column:1; grid-row:3; padding:0 12px 12px; min-height:280px; height:45vh; min-width:0; }
-    .chart-container { padding:14px; }
+    .left-col { grid-column:1; grid-row:3; padding:0 10px 10px; min-height:200px; height:35vh; min-width:0; }
+    .chart-container { padding:10px; }
+    .chart-legend { padding-top:6px; font-size:10px; gap:12px; }
 
     .right-col {
       grid-column:1; grid-row:4;
@@ -221,46 +224,52 @@
     }
     .right-scroll { overflow:visible; }
 
-    .liga-section { padding:14px 14px 10px; }
-    .liga-card { padding:10px 12px; gap:8px; }
+    .liga-section { padding:12px 14px 8px; }
+    .liga-card { padding:8px 10px; gap:8px; margin-bottom:4px; }
     .liga-name { font-size:13px; }
+    .liga-stats { font-size:9px; }
+    .liga-rank { width:24px; height:24px; font-size:11px; border-radius:6px; }
+    .liga-stripe { height:24px; }
+    .liga-trophy { font-size:14px; }
 
-    .side-section-header { padding:12px 14px; }
-    .side-section-body { padding:0 14px 14px; }
+    .side-section-header { padding:10px 14px; }
+    .side-section-body { padding:0 14px 12px; }
     .side-section-body.open { display:block; }
 
-    .form-input { padding:12px 14px; font-size:14px; border-radius:10px; }
-    select.form-input { padding-right:36px; }
-    .form-label { font-size:11px; margin-bottom:6px; }
-    .form-group { margin-bottom:12px; }
+    .form-input { padding:10px 12px; font-size:14px; border-radius:8px; }
+    select.form-input { padding-right:34px; }
+    .form-label { font-size:10px; margin-bottom:4px; }
+    .form-group { margin-bottom:10px; }
 
-    .act-row { padding:10px 0; gap:10px; }
-    .act-label { font-size:14px; }
-    .act-input { width:70px; padding:10px 8px; font-size:14px; border-radius:8px; }
-    .act-unit { font-size:12px; }
+    .act-row { padding:8px 0; gap:8px; }
+    .act-label { font-size:13px; }
+    .act-input { width:64px; padding:8px 6px; font-size:14px; border-radius:6px; }
+    .act-unit { font-size:11px; }
 
-    .points-preview { padding:16px; margin:16px 0 14px; border-radius:12px; }
-    .points-preview-val { font-size:32px; }
-    .btn-submit { padding:14px; font-size:14px; border-radius:12px; }
-    .btn-add-full { padding:12px; font-size:14px; border-radius:10px; }
+    .points-preview { padding:12px; margin:12px 0 10px; border-radius:10px; }
+    .points-preview-val { font-size:26px; }
+    .points-preview-label { font-size:10px; }
+    .btn-submit { padding:12px; font-size:13px; border-radius:10px; }
+    .btn-add-full { padding:10px; font-size:13px; border-radius:8px; }
 
-    .add-field { padding:12px 14px; font-size:14px; border-radius:10px; }
-    .add-field-row input, .add-field-row select { padding:12px; font-size:14px; border-radius:10px; }
+    .add-field { padding:10px 12px; font-size:13px; border-radius:8px; margin-bottom:6px; }
+    .add-field-row input, .add-field-row select { padding:10px; font-size:13px; border-radius:8px; }
+    .add-section-title { font-size:11px; margin-top:12px; margin-bottom:6px; }
 
-    .hist-card { padding:14px; margin-bottom:10px; }
-    .hist-card-name { font-size:14px; }
-    .hist-card-pts { font-size:16px; }
-    .hist-btn { width:32px; height:32px; font-size:14px; border-radius:8px; }
+    .hist-card { padding:10px 12px; margin-bottom:6px; }
+    .hist-card-name { font-size:13px; }
+    .hist-card-pts { font-size:14px; }
+    .hist-btn { width:28px; height:28px; font-size:12px; border-radius:6px; }
 
-    .pts-card { padding:14px; margin-bottom:10px; }
-    .pts-card-name { font-size:14px; }
-    .pts-input { width:64px; padding:10px 8px; font-size:14px; }
-    .pts-del { width:32px; height:32px; font-size:14px; }
+    .pts-card { padding:10px 12px; margin-bottom:6px; }
+    .pts-card-name { font-size:13px; }
+    .pts-input { width:56px; padding:8px 6px; font-size:13px; }
+    .pts-del { width:28px; height:28px; font-size:12px; }
 
-    .player-card { padding:14px; margin-bottom:10px; }
-    .player-name { font-size:15px; }
-    .player-del { width:32px; height:32px; font-size:14px; }
-    .player-color-block { width:44px; height:44px; }
+    .player-card { padding:10px 12px; margin-bottom:6px; }
+    .player-name { font-size:13px; }
+    .player-del { width:28px; height:28px; font-size:12px; }
+    .player-color-block { width:36px; height:36px; border-radius:6px; }
 
     .grid-2 { grid-template-columns:1fr; }
 
@@ -274,9 +283,10 @@
   }
 
   @media (max-width:400px) {
-    .logo-title { font-size:14px; }
-    .left-col { height:38vh; min-height:240px; }
-    .liga-card { flex-wrap:wrap; }
+    .logo-title { font-size:13px; }
+    .left-col { height:32vh; min-height:200px; }
+    .tab-pill { padding:5px 8px; font-size:10px; }
+    .header { padding:8px 12px; }
   }
 </style>
 </head>
