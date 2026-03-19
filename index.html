@@ -282,6 +282,91 @@ hr.nv-rule { border:none; border-top:1px solid var(--line); }
   color:var(--muted);
 }
 
+/* ─── CASE ────────────────────────────── */
+.case-section { background:var(--forest); }
+.case-grid {
+  display:grid; grid-template-columns:1.2fr 1fr;
+  gap:4rem; align-items:center;
+}
+.case-text .section-label { color:var(--gold); }
+.case-text h2 {
+  font-family:'Fraunces',serif;
+  font-size:clamp(2rem,3.5vw,3.2rem);
+  font-weight:700; color:var(--cream); line-height:1.08;
+  margin-bottom:1.5rem;
+}
+.case-text h2 em { font-style:italic; font-weight:300; color:var(--gold-l); }
+.case-text p {
+  font-size:.95rem; line-height:1.8;
+  color:rgba(245,239,228,.55); margin-bottom:.8rem;
+}
+.case-stats {
+  display:flex; gap:2.5rem; margin-top:1.8rem;
+}
+.case-stat { display:flex; flex-direction:column; }
+.case-stat-num {
+  font-family:'Fraunces',serif; font-size:1.8rem; font-weight:700;
+  color:var(--cream); line-height:1.1;
+}
+.case-stat-label {
+  font-size:.7rem; letter-spacing:.1em; text-transform:uppercase;
+  color:rgba(245,239,228,.35); margin-top:.25rem;
+}
+.case-img {
+  border-radius:6px; overflow:hidden; aspect-ratio:4/3;
+}
+.case-img img {
+  width:100%; height:100%; object-fit:cover;
+  filter:sepia(.1) contrast(1.05); opacity:.85;
+}
+
+/* ─── MEDIA SECTION ───────────────────── */
+.media-head { margin-bottom:2.5rem; }
+.media-head h2 {
+  font-family:'Fraunces',serif;
+  font-size:clamp(1.8rem,3vw,2.8rem);
+  font-weight:700; color:var(--forest); line-height:1.1;
+}
+.media-head h2 em { font-style:italic; font-weight:300; }
+.media-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:1rem;
+}
+.media-card {
+  display:flex; flex-direction:column;
+  padding:2rem 1.5rem;
+  background:var(--off); border:1px solid var(--line);
+  border-radius:6px; transition:all .25s;
+  text-decoration:none;
+}
+.media-card:hover {
+  background:var(--forest); border-color:var(--forest);
+}
+.media-card:hover .media-card-outlet { color:var(--gold); }
+.media-card:hover .media-card-title { color:var(--cream); }
+.media-card-outlet {
+  font-family:'Fraunces',serif; font-size:.85rem;
+  font-style:italic; font-weight:700; color:var(--gold);
+  margin-bottom:.6rem;
+}
+.media-card-title {
+  font-size:.88rem; line-height:1.5; color:var(--sage);
+  transition:color .25s;
+}
+
+/* ─── CONTACT BOOK ────────────────────── */
+.contact-book {
+  display:inline-block;
+  font-size:1.1rem; font-weight:500; color:var(--cream);
+  background:var(--gold); padding:.9rem 2.2rem;
+  border-radius:6px; margin-bottom:1.2rem;
+  transition:background .2s;
+}
+.contact-book:hover { background:var(--gold-l); }
+.contact-or {
+  font-size:.82rem; color:rgba(245,239,228,.3);
+  margin-bottom:.8rem;
+}
+
 /* ─── STATS STRIP ─────────────────────── */
 .media-strip { background:var(--off); padding:4.5rem 0; }
 .stats-row {
@@ -393,6 +478,10 @@ hr.nv-rule { border:none; border-top:1px solid var(--line); }
   .nv-wrap { padding:0 2rem; }
   .about-grid { grid-template-columns:1fr; gap:2.5rem; }
   .philosophy-grid { grid-template-columns:1fr; gap:2.5rem; }
+  .case-grid { grid-template-columns:1fr; gap:2rem; }
+  .case-img { max-height:300px; }
+  .case-stats { gap:1.5rem; }
+  .media-grid { grid-template-columns:1fr 1fr; }
   .services-list { grid-template-columns:1fr 1fr; gap:1rem; }
   .profiles { grid-template-columns:1fr 1fr; }
   .services-head { flex-direction:column; align-items:flex-start; }
@@ -404,6 +493,7 @@ hr.nv-rule { border:none; border-top:1px solid var(--line); }
   .services-list { grid-template-columns:1fr; }
   .profiles { grid-template-columns:1fr 1fr; }
   .stats-row { grid-template-columns:1fr; gap:2rem; }
+  .media-grid { grid-template-columns:1fr; }
   .hero-text { padding:7rem 1.5rem 3.5rem; }
   .hero-text h1 { font-size:clamp(2.4rem,8vw,3.5rem); }
   .contact h2 { font-size:clamp(2.2rem,8vw,4rem); }
@@ -422,6 +512,7 @@ hr.nv-rule { border:none; border-top:1px solid var(--line); }
     <ul class="nav-links">
       <li><a href="#om">Om oss</a></li>
       <li><a href="#tjenester">Tjenester</a></li>
+      <li><a href="#case">Case</a></li>
       <li><a href="#team">Team</a></li>
       <li><a href="#kontakt">Kontakt</a></li>
     </ul>
@@ -434,7 +525,7 @@ hr.nv-rule { border:none; border-top:1px solid var(--line); }
     <span class="hero-tag">Konsulent & forretningsutvikling</span>
     <h1>Vi vandrer<br><em>for å bygge<br>noe varig.</em></h1>
     <p class="hero-body">Et tverrfaglig team som har valgt å gjøre ting på vår måte — med jus, økonomi, psykologi og markedsføring under ett tak. Fra Vestnes til hele Skandinavia.</p>
-    <a href="#kontakt" class="hero-cta">Ta kontakt</a>
+    <a href="https://calendly.com/viktorsanden" target="_blank" rel="noopener" class="hero-cta">Book en prat</a>
   </div>
   <div class="hero-img">
     <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80" alt="Skandinavisk natur — Nordic Vagabonds" loading="eager">
@@ -568,6 +659,76 @@ hr.nv-rule { border:none; border-top:1px solid var(--line); }
   </div>
 </section>
 
+<!-- CASE: SPEEDFRIENDING -->
+<section class="nv-section case-section" id="case">
+  <div class="nv-wrap">
+    <div class="case-grid">
+      <div class="case-text nv-reveal">
+        <span class="section-label">Case</span>
+        <h2>Vi bygde <em>Speedfriending.</em></h2>
+        <p>Det som startet som et konsept for å koble mennesker, ble til Norges største plattform for sosiale arrangementer. Over 50 000 mennesker har møttes gjennom Speedfriending — i 15+ byer, med app, nettside og et helt økosystem.</p>
+        <p>Vi gjorde alt selv: strategi, utvikling, design, markedsføring og drift. Det er denne erfaringen vi tar med inn i hvert oppdrag.</p>
+        <div class="case-stats">
+          <div class="case-stat">
+            <span class="case-stat-num">50 000+</span>
+            <span class="case-stat-label">deltakere</span>
+          </div>
+          <div class="case-stat">
+            <span class="case-stat-num">15+</span>
+            <span class="case-stat-label">byer</span>
+          </div>
+          <div class="case-stat">
+            <span class="case-stat-num">2019→</span>
+            <span class="case-stat-label">fortsatt aktiv</span>
+          </div>
+        </div>
+        <a href="https://speedfriending.no" target="_blank" rel="noopener" class="hero-cta" style="color:var(--forest); border-color:var(--gold); margin-top:1.5rem;">Se Speedfriending</a>
+      </div>
+      <div class="case-media nv-reveal">
+        <div class="case-img">
+          <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=640&q=80" alt="Speedfriending event" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SETT I MEDIA -->
+<section class="nv-section media-section">
+  <div class="nv-wrap">
+    <div class="media-head nv-reveal">
+      <span class="section-label">Sett i media</span>
+      <h2>Noen har lagt <em>merke til oss.</em></h2>
+    </div>
+    <div class="media-grid" id="media-grid">
+      <a href="https://www.nrk.no/mr/her-motes-alle-i-hap-om-nye-vennskap-1.16340934" target="_blank" rel="noopener" class="media-card nv-reveal">
+        <span class="media-card-outlet">NRK</span>
+        <span class="media-card-title">Her møtes alle i håp om nye vennskap</span>
+      </a>
+      <a href="https://www.nrk.no/vestland/ein-av-tre-studentar-kjenner-seg-einsame-_-desse-hapar-_speed-friending_-skal-kurere-det-1.14376037" target="_blank" rel="noopener" class="media-card nv-reveal">
+        <span class="media-card-outlet">NRK Vestland</span>
+        <span class="media-card-title">Ein av tre studentar kjenner seg einsame — desse håpar speed friending skal kurere det</span>
+      </a>
+      <a href="https://www.aftenposten.no/oslo/i/VqWvAV/denne-gjengen-moettes-paa-speedfriending-i-mai-naa-sees-de-ukentlig" target="_blank" rel="noopener" class="media-card nv-reveal">
+        <span class="media-card-outlet">Aftenposten</span>
+        <span class="media-card-title">Denne gjengen møttes på Speedfriending i mai. Nå sees de ukentlig.</span>
+      </a>
+      <a href="https://www.aftenbladet.no/aktuelt/i/9vn7Md/her-kan-du-faa-en-venn-paa-fem-minutter" target="_blank" rel="noopener" class="media-card nv-reveal">
+        <span class="media-card-outlet">Stavanger Aftenblad</span>
+        <span class="media-card-title">Her kan du få en venn på fem minutter</span>
+      </a>
+      <a href="https://p3.no/enkel-guide-til-vennskap/" target="_blank" rel="noopener" class="media-card nv-reveal">
+        <span class="media-card-outlet">NRK P3</span>
+        <span class="media-card-title">Enkel guide til vennskap</span>
+      </a>
+      <a href="https://www.krsby.no/student/i/g7xKrk/vil-gjoere-det-lettere-for-studenter-aa-faa-nye-venner-arrangerte-speedfriending" target="_blank" rel="noopener" class="media-card nv-reveal">
+        <span class="media-card-outlet">Kristiansand Byavis</span>
+        <span class="media-card-title">Arrangerte speedfriending for å gjøre det lettere å få nye venner</span>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- TALL / SOCIAL PROOF -->
 <div class="media-strip">
   <div class="nv-wrap">
@@ -593,6 +754,8 @@ hr.nv-rule { border:none; border-top:1px solid var(--line); }
   <div class="nv-wrap contact-inner">
     <span class="section-label">Kontakt</span>
     <h2 class="nv-reveal">La oss ta<br><em>en kaffe.</em></h2>
+    <a href="https://calendly.com/viktorsanden" target="_blank" rel="noopener" class="contact-book nv-reveal">Book en uforpliktende prat →</a>
+    <p class="contact-or nv-reveal">eller send en e-post</p>
     <a href="mailto:hei@nordicvagabonds.no" class="contact-email nv-reveal">hei@nordicvagabonds.no</a>
     <div class="contact-footer nv-reveal">
       <div class="cf-group">
