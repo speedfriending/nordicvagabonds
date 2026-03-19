@@ -202,15 +202,16 @@
       -webkit-overflow-scrolling:touch;
       width:100%;
     }
-    .header { padding:10px 12px; gap:8px; flex-wrap:nowrap; grid-column:1; }
+    .header { padding:8px 12px; gap:6px; flex-wrap:nowrap; grid-column:1; }
     .header-stats { display:none; }
-    .logo { gap:8px; }
-    .logo-title { font-size:14px; }
-    .logo-sub { font-size:8px; }
-    .logo-icon { width:30px; height:30px; font-size:14px; border-radius:8px; }
+    .header-spacer { display:none; }
+    .logo { gap:6px; min-width:0; }
+    .logo-title { font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .logo-sub { font-size:8px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .logo-icon { width:28px; height:28px; font-size:13px; border-radius:7px; flex-shrink:0; }
 
-    .tabs-row { grid-column:1; grid-row:2; padding:6px 14px; gap:6px; display:flex; flex-wrap:nowrap; }
-    .tab-pill { padding:6px 12px; font-size:11px; white-space:nowrap; flex:1; justify-content:center; text-align:center; }
+    .tabs-row { grid-column:1; grid-row:2; padding:4px 12px 8px; gap:4px; display:flex; flex-wrap:nowrap; }
+    .tab-pill { padding:6px 0; font-size:11px; white-space:nowrap; flex:1; justify-content:center; text-align:center; border-radius:20px; }
     .tab-pill .tab-icon { display:none; }
 
     .left-col { grid-column:1; grid-row:3; padding:0 10px 10px; min-height:200px; height:35vh; min-width:0; }
