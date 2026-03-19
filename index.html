@@ -11,7 +11,7 @@
   <meta property="og:description" content="Et skandinavisk byrå med bred kompetanse — jurister, økonomer, markedsførere og psykologer som jobber mot ett mål.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://nordicvagabonds.no">
-  <meta property="og:image" content="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&h=630&fit=crop&q=80">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=630&fit=crop&q=80">
   <meta property="og:locale" content="nb_NO">
   <meta property="og:site_name" content="Nordic Vagabonds">
 
@@ -19,7 +19,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Nordic Vagabonds — Konsulent & forretningsutvikling">
   <meta name="twitter:description" content="Et skandinavisk byrå med bred kompetanse — jurister, økonomer, markedsførere og psykologer.">
-  <meta name="twitter:image" content="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&h=630&fit=crop&q=80">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=630&fit=crop&q=80">
 
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%231e2e22' rx='16' width='100' height='100'/><text x='50' y='68' font-family='serif' font-size='52' font-weight='700' fill='%23f5efe4' text-anchor='middle'>NV</text></svg>">
@@ -50,7 +50,9 @@ body {
   font-family:'DM Sans',sans-serif;
   font-weight:300;
   -webkit-font-smoothing:antialiased;
+  opacity:0; animation:nv-fade .6s .05s forwards;
 }
+@keyframes nv-fade { to { opacity:1; } }
 img { max-width:100%; height:auto; display:block; }
 a { text-decoration:none; }
 
@@ -336,8 +338,9 @@ hr.nv-rule { border:none; border-top:1px solid var(--line); }
 .site-footer {
   background:var(--forest);
   border-top:1px solid rgba(245,239,228,.07);
-  padding:1.4rem 4rem;
+  padding:2rem 4rem;
   display:flex; justify-content:space-between; align-items:center;
+  flex-wrap:wrap; gap:.5rem 2rem;
 }
 .site-footer span { font-size:.72rem; color:rgba(245,239,228,.25); letter-spacing:.07em; }
 
@@ -434,7 +437,7 @@ hr.nv-rule { border:none; border-top:1px solid var(--line); }
     <a href="#kontakt" class="hero-cta">Ta kontakt</a>
   </div>
   <div class="hero-img">
-    <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=900&q=80" alt="Nordic Vagabonds team" loading="eager">
+    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80" alt="Skandinavisk natur — Nordic Vagabonds" loading="eager">
     <div class="hero-img-overlay"></div>
   </div>
 </section>
@@ -452,7 +455,7 @@ hr.nv-rule { border:none; border-top:1px solid var(--line); }
         <p>Vi kaller oss vagabonder fordi vi aldri har fulgt én rett linje. Teamet samler folk fra jus, økonomi, helse, psykologi og markedsføring — mennesker som har vandret, lært og bygd på tvers av bransjer.</p>
         <p>Det gjør oss vanskelige å putte i bås, men enkle å samarbeide med. Vi møter oppdraget der det er — ikke der det passer oss.</p>
         <div class="about-img">
-          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&q=80" alt="Workshop — Nordic Vagabonds" loading="lazy">
+          <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=900&q=80" alt="Samarbeid — Nordic Vagabonds" loading="lazy">
         </div>
         <div class="tags">
           <span class="tag">Jus</span>
