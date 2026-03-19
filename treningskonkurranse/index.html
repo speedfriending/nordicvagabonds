@@ -236,14 +236,15 @@
     .liga-stripe { height:24px; }
     .liga-trophy { font-size:14px; }
 
+    .side-section { overflow:hidden; width:100%; }
     .side-section-header { padding:10px 12px; }
-    .side-section-body { padding:0 12px 12px; overflow:hidden; }
+    .side-section-body { padding:0 12px 12px; overflow:hidden; width:100%; box-sizing:border-box; }
     .side-section-body.open { display:block; }
 
     .form-group { margin-bottom:10px; overflow:hidden; }
     .form-input { padding:10px 12px; font-size:14px; border-radius:8px; width:100% !important; min-width:0; max-width:100% !important; -webkit-appearance:none; appearance:none; }
     select.form-input { padding-right:34px; }
-    input[type="date"].form-input { -webkit-appearance:none; appearance:none; }
+    input[type="date"].form-input { -webkit-appearance:none; appearance:none; display:block; box-sizing:border-box !important; overflow:hidden; }
     .form-label { font-size:10px; margin-bottom:4px; }
     .form-group { margin-bottom:10px; }
 
