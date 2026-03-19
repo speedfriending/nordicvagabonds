@@ -354,14 +354,11 @@ hr.nv-rule { border:none; border-top:1px solid var(--line); }
 }
 
 /* ─── CONTACT BOOK ────────────────────── */
-.contact-book {
-  display:inline-block;
-  font-size:1.1rem; font-weight:500; color:var(--cream);
-  background:var(--gold); padding:.9rem 2.2rem;
-  border-radius:6px; margin-bottom:1.2rem;
-  transition:background .2s;
+.calendly-wrap {
+  max-width:700px; margin:0 auto 1.5rem;
+  min-height:700px;
+  border-radius:8px; overflow:hidden;
 }
-.contact-book:hover { background:var(--gold-l); }
 .contact-or {
   font-size:.82rem; color:rgba(245,239,228,.3);
   margin-bottom:.8rem;
@@ -513,6 +510,7 @@ hr.nv-rule { border:none; border-top:1px solid var(--line); }
       <li><a href="#om">Om oss</a></li>
       <li><a href="#tjenester">Tjenester</a></li>
       <li><a href="#case">Case</a></li>
+      <li><a href="media.html">Media</a></li>
       <li><a href="#team">Team</a></li>
       <li><a href="#kontakt">Kontakt</a></li>
     </ul>
@@ -699,6 +697,7 @@ hr.nv-rule { border:none; border-top:1px solid var(--line); }
     <div class="media-head nv-reveal">
       <span class="section-label">Sett i media</span>
       <h2>Noen har lagt <em>merke til oss.</em></h2>
+      <a href="media.html" style="font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); border-bottom:1px solid var(--gold); padding-bottom:2px;">Se alt i media &rarr;</a>
     </div>
     <div class="media-grid" id="media-grid">
       <a href="https://www.nrk.no/mr/her-motes-alle-i-hap-om-nye-vennskap-1.16340934" target="_blank" rel="noopener" class="media-card nv-reveal">
@@ -754,7 +753,7 @@ hr.nv-rule { border:none; border-top:1px solid var(--line); }
   <div class="nv-wrap contact-inner">
     <span class="section-label">Kontakt</span>
     <h2 class="nv-reveal">La oss ta<br><em>en kaffe.</em></h2>
-    <a href="https://calendly.com/viktorsanden" target="_blank" rel="noopener" class="contact-book nv-reveal">Book en uforpliktende prat →</a>
+    <div class="calendly-wrap nv-reveal" id="calendly-embed"></div>
     <p class="contact-or nv-reveal">eller send en e-post</p>
     <a href="mailto:hei@nordicvagabonds.no" class="contact-email nv-reveal">hei@nordicvagabonds.no</a>
     <div class="contact-footer nv-reveal">
@@ -850,6 +849,30 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+});
+</script>
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const el = document.getElementById('calendly-embed');
+  if (el && window.Calendly) {
+    Calendly.initInlineWidget({
+      url: 'https://calendly.com/viktorsanden?hide_gdpr_banner=1&background_color=1e2e22&text_color=f5efe4&primary_color=b8893a',
+      parentElement: el,
+    });
+  } else if (el) {
+    // Wait for Calendly script to load
+    const check = setInterval(() => {
+      if (window.Calendly) {
+        clearInterval(check);
+        Calendly.initInlineWidget({
+          url: 'https://calendly.com/viktorsanden?hide_gdpr_banner=1&background_color=1e2e22&text_color=f5efe4&primary_color=b8893a',
+          parentElement: el,
+        });
+      }
+    }, 200);
+  }
 });
 </script>
 </body>

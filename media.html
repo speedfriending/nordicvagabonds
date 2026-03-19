@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media — Nordic Vagabonds</title>
+  <meta name="description" content="Speedfriending og Nordic Vagabonds i media — NRK, Aftenposten, TV2 og mer.">
+
+  <meta property="og:title" content="Media — Nordic Vagabonds">
+  <meta property="og:description" content="Speedfriending og Nordic Vagabonds i media.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nordicvagabonds.no/media">
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%231e2e22' rx='16' width='100' height='100'/><text x='50' y='68' font-family='serif' font-size='52' font-weight='700' fill='%23f5efe4' text-anchor='middle'>NV</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+:root {
+  --ink:    #1a1f1b;
+  --forest: #1e2e22;
+  --sage:   #3d5243;
+  --cream:  #f5efe4;
+  --off:    #ede6d9;
+  --gold:   #b8893a;
+  --gold-l: #d4a558;
+  --muted:  #6e7d71;
+  --line:   rgba(26,31,27,0.12);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background:var(--cream);
+  color:var(--ink);
+  font-family:'DM Sans',sans-serif;
+  font-weight:300;
+  -webkit-font-smoothing:antialiased;
+  opacity:0; animation:nv-fade .6s .05s forwards;
+}
+@keyframes nv-fade { to { opacity:1; } }
+img { max-width:100%; height:auto; display:block; }
+a { text-decoration:none; color:var(--forest); }
+
+/* ─── NAV ────────────────────────────── */
+.site-header {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:1.2rem 3rem;
+  background:rgba(245,239,228,0.85);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid transparent;
+  transition:border-color .3s, padding .3s, background .3s;
+}
+.site-header.scrolled { border-color:var(--line); padding-block:.8rem; }
+.logo { font-family:'Fraunces',serif; font-weight:700; font-size:1.15rem; color:var(--forest); }
+.nav-links { list-style:none; display:flex; gap:2rem; }
+.nav-links a {
+  font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted); transition:color .2s;
+}
+.nav-links a:hover { color:var(--forest); }
+
+/* ─── PAGE ───────────────────────────── */
+.page-hero {
+  padding:10rem 3rem 4rem;
+  max-width:900px; margin:0 auto;
+}
+.back {
+  display:inline-block;
+  font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:2rem;
+  transition:color .2s;
+}
+.back:hover { color:var(--forest); }
+.page-hero h1 {
+  font-family:'Fraunces',serif;
+  font-size:clamp(2.4rem,5vw,4rem);
+  font-weight:700; color:var(--forest);
+  line-height:1.08; margin-bottom:1rem;
+}
+.page-hero h1 em { font-style:italic; font-weight:300; }
+.page-hero .lead {
+  font-size:1.05rem; line-height:1.8;
+  color:var(--muted); max-width:600px;
+}
+
+/* ─── SECTIONS ───────────────────────── */
+.media-page { max-width:900px; margin:0 auto; padding:0 3rem 6rem; }
+
+.media-block {
+  margin-bottom:4rem;
+  opacity:0; transform:translateY(24px);
+  transition:opacity .5s, transform .5s;
+}
+.media-block.in { opacity:1; transform:translateY(0); }
+
+.media-block .section-label {
+  font-size:.68rem; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--gold); display:block; margin-bottom:.8rem;
+}
+.media-block h2 {
+  font-family:'Fraunces',serif;
+  font-size:clamp(1.4rem,2.5vw,2rem);
+  font-weight:700; color:var(--forest);
+  line-height:1.15; margin-bottom:1.2rem;
+}
+.media-block h2 em { font-style:italic; font-weight:300; }
+.media-block .description {
+  font-size:.92rem; line-height:1.8; color:var(--muted);
+  margin-bottom:1.5rem; max-width:640px;
+}
+
+/* ─── VIDEO EMBED ────────────────────── */
+.video-embed {
+  position:relative;
+  width:100%;
+  padding-bottom:56.25%; /* 16:9 */
+  background:var(--forest);
+  border-radius:8px;
+  overflow:hidden;
+  margin-bottom:1rem;
+}
+.video-embed iframe {
+  position:absolute; top:0; left:0;
+  width:100%; height:100%;
+  border:none;
+}
+.video-embed .video-placeholder {
+  position:absolute; top:0; left:0;
+  width:100%; height:100%;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  color:rgba(245,239,228,.5);
+  font-size:.9rem; gap:.5rem;
+}
+.video-embed .video-placeholder .play-icon {
+  width:64px; height:64px;
+  border:2px solid rgba(245,239,228,.3);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5rem;
+  transition:border-color .2s, background .2s;
+}
+.video-caption {
+  font-size:.78rem; color:var(--muted); font-style:italic;
+}
+
+/* ─── ARTICLE CARDS ──────────────────── */
+.article-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:1rem;
+}
+.article-card {
+  display:flex; flex-direction:column;
+  padding:1.8rem 1.5rem;
+  background:var(--off); border:1px solid var(--line);
+  border-radius:6px; transition:all .25s;
+  text-decoration:none;
+}
+.article-card:hover {
+  background:var(--forest); border-color:var(--forest);
+  transform:translateY(-2px);
+  box-shadow:0 8px 30px rgba(30,46,34,.12);
+}
+.article-card:hover .article-outlet { color:var(--gold); }
+.article-card:hover .article-title { color:var(--cream); }
+.article-card:hover .article-excerpt { color:rgba(245,239,228,.5); }
+.article-outlet {
+  font-family:'Fraunces',serif; font-size:.82rem;
+  font-style:italic; font-weight:700; color:var(--gold);
+  margin-bottom:.4rem;
+}
+.article-year {
+  font-size:.68rem; color:var(--muted);
+  letter-spacing:.06em; margin-bottom:.6rem;
+}
+.article-title {
+  font-size:.92rem; font-weight:500; line-height:1.45;
+  color:var(--forest); transition:color .25s;
+  margin-bottom:.4rem;
+}
+.article-excerpt {
+  font-size:.8rem; line-height:1.6; color:var(--muted);
+  transition:color .25s;
+}
+
+/* ─── QUOTE ──────────────────────────── */
+.pull-quote {
+  border-left:3px solid var(--gold);
+  padding:1.5rem 0 1.5rem 2rem;
+  margin:3rem 0;
+}
+.pull-quote blockquote {
+  font-family:'Fraunces',serif;
+  font-size:clamp(1.1rem,2vw,1.5rem);
+  font-style:italic; font-weight:300;
+  color:var(--forest); line-height:1.5;
+  margin-bottom:.6rem;
+}
+.pull-quote cite {
+  font-family:'DM Sans',sans-serif;
+  font-style:normal; font-size:.78rem;
+  color:var(--muted); letter-spacing:.04em;
+}
+
+/* ─── CTA STRIP ──────────────────────── */
+.cta-strip {
+  background:var(--forest);
+  padding:4.5rem 3rem;
+  text-align:center;
+  margin-top:2rem;
+}
+.cta-strip h2 {
+  font-family:'Fraunces',serif;
+  font-size:clamp(1.8rem,3.5vw,2.8rem);
+  font-weight:700; color:var(--cream);
+  line-height:1.1; margin-bottom:.6rem;
+}
+.cta-strip h2 em { font-style:italic; font-weight:300; color:var(--gold-l); }
+.cta-strip p {
+  font-size:.92rem; color:rgba(245,239,228,.45);
+  margin-bottom:2rem;
+}
+.cta-strip .cta-btn {
+  display:inline-block;
+  font-size:.85rem; font-weight:500;
+  color:var(--forest); background:var(--gold);
+  padding:.9rem 2.4rem; border-radius:6px;
+  transition:background .2s;
+}
+.cta-strip .cta-btn:hover { background:var(--gold-l); }
+
+/* ─── FOOTER ─────────────────────────── */
+.site-footer {
+  background:var(--forest);
+  color:rgba(245,239,228,.25);
+  padding:2rem 3rem;
+  display:flex; flex-wrap:wrap; gap:.6rem 2rem;
+  font-size:.72rem;
+}
+.site-footer a { color:rgba(245,239,228,.35); }
+
+/* ─── RESPONSIVE ─────────────────────── */
+@media (max-width:768px) {
+  .site-header { padding:1rem 1.5rem; }
+  .nav-links { display:none; }
+  .page-hero { padding:8rem 1.5rem 3rem; }
+  .media-page { padding:0 1.5rem 4rem; }
+  .article-grid { grid-template-columns:1fr; }
+  .pull-quote { padding-left:1.2rem; }
+  .cta-strip { padding:3.5rem 1.5rem; }
+  .site-footer { padding:2rem 1.5rem; }
+}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="site-header" id="site-header">
+  <a href="/" class="logo">Nordic Vagabonds</a>
+  <nav>
+    <ul class="nav-links">
+      <li><a href="/#om">Om oss</a></li>
+      <li><a href="/#tjenester">Tjenester</a></li>
+      <li><a href="/#case">Case</a></li>
+      <li><a href="/media" style="color:var(--forest);">Media</a></li>
+      <li><a href="/#kontakt">Kontakt</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="page-hero">
+  <a href="/" class="back">&larr; Tilbake til forsiden</a>
+  <h1>Speedfriending<br><em>i media.</em></h1>
+  <p class="lead">Vi har vært heldige nok til å bli dekket av noen av Norges største medier. Her samler vi klipp, artikler og omtaler.</p>
+</div>
+
+<div class="media-page">
+
+  <!-- VIDEO: GOD MORGEN NORGE -->
+  <div class="media-block" id="gmn">
+    <span class="section-label">TV-innslag</span>
+    <h2>God Morgen Norge <em>— TV2</em></h2>
+    <p class="description">Speedfriending ble omtalt på God Morgen Norge, TV2s morgenshow. Innslaget handler om hvordan voksne kan finne nye venner gjennom organiserte sosiale arrangementer.</p>
+    <div class="video-embed">
+      <!-- Erstatt placeholder med faktisk embed når du har video-URL -->
+      <div class="video-placeholder" id="gmn-placeholder">
+        <div class="play-icon">&#9654;</div>
+        <span>Video kommer — last opp klipp eller lim inn embed-URL</span>
+      </div>
+    </div>
+    <p class="video-caption">God Morgen Norge, TV2</p>
+  </div>
+
+  <!-- VIDEO: NRK INNAFOR -->
+  <div class="media-block" id="innafor">
+    <span class="section-label">Dokumentar</span>
+    <h2>Innafor <em>— NRK</em></h2>
+    <p class="description">NRKs dokumentarserie Innafor utforsket fenomenet speedfriending og hvordan det hjelper folk med å bygge sosiale nettverk i en tid med økende ensomhet.</p>
+    <div class="video-embed">
+      <div class="video-placeholder" id="innafor-placeholder">
+        <div class="play-icon">&#9654;</div>
+        <span>Video kommer — last opp klipp eller lim inn embed-URL</span>
+      </div>
+    </div>
+    <p class="video-caption">Innafor, NRK</p>
+  </div>
+
+  <!-- SITAT -->
+  <div class="pull-quote media-block">
+    <blockquote>Dette var noe vi selv savnet da vi flyttet til en ny by. Speedfriending ble svaret.</blockquote>
+    <cite>— Viktor Sanden, grunnlegger</cite>
+  </div>
+
+  <!-- ARTIKLER -->
+  <div class="media-block">
+    <span class="section-label">Artikler</span>
+    <h2>Skrevet om <em>oss.</em></h2>
+    <div class="article-grid">
+
+      <a href="https://www.nrk.no/mr/her-motes-alle-i-hap-om-nye-vennskap-1.16340934" target="_blank" rel="noopener" class="article-card">
+        <span class="article-outlet">NRK Møre og Romsdal</span>
+        <span class="article-title">Her møtes alle i håp om nye vennskap</span>
+        <span class="article-excerpt">Om speedfriending-konseptet og hvordan det bringer folk sammen i nye byer.</span>
+      </a>
+
+      <a href="https://www.nrk.no/vestland/ein-av-tre-studentar-kjenner-seg-einsame-_-desse-hapar-_speed-friending_-skal-kurere-det-1.14376037" target="_blank" rel="noopener" class="article-card">
+        <span class="article-outlet">NRK Vestland</span>
+        <span class="article-title">Ein av tre studentar kjenner seg einsame — desse håpar speed friending skal kurere det</span>
+        <span class="article-excerpt">Studentensomhet og speedfriending som løsning blant unge i Bergen.</span>
+      </a>
+
+      <a href="https://www.aftenposten.no/oslo/i/VqWvAV/denne-gjengen-moettes-paa-speedfriending-i-mai-naa-sees-de-ukentlig" target="_blank" rel="noopener" class="article-card">
+        <span class="article-outlet">Aftenposten</span>
+        <span class="article-title">Denne gjengen møttes på Speedfriending i mai. Nå sees de ukentlig.</span>
+        <span class="article-excerpt">Historien om vennskap som startet på et speedfriending-arrangement i Oslo.</span>
+      </a>
+
+      <a href="https://www.aftenbladet.no/aktuelt/i/9vn7Md/her-kan-du-faa-en-venn-paa-fem-minutter" target="_blank" rel="noopener" class="article-card">
+        <span class="article-outlet">Stavanger Aftenblad</span>
+        <span class="article-title">Her kan du få en venn på fem minutter</span>
+        <span class="article-excerpt">Speedfriending i Stavanger — fra fremmede til venner på en kveld.</span>
+      </a>
+
+      <a href="https://p3.no/enkel-guide-til-vennskap/" target="_blank" rel="noopener" class="article-card">
+        <span class="article-outlet">NRK P3</span>
+        <span class="article-title">Enkel guide til vennskap</span>
+        <span class="article-excerpt">P3s guide til å finne nye venner, med speedfriending som et av tipsene.</span>
+      </a>
+
+      <a href="https://www.krsby.no/student/i/g7xKrk/vil-gjoere-det-lettere-for-studenter-aa-faa-nye-venner-arrangerte-speedfriending" target="_blank" rel="noopener" class="article-card">
+        <span class="article-outlet">Kristiansand Byavis</span>
+        <span class="article-title">Arrangerte speedfriending for å gjøre det lettere å få nye venner</span>
+        <span class="article-excerpt">Lokalt initiativ for å koble studenter og innflyttere i Kristiansand.</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- TALL -->
+  <div class="media-block" style="background:var(--off); border-radius:8px; padding:2.5rem;">
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; text-align:center;">
+      <div>
+        <div style="font-family:'Fraunces',serif; font-size:2rem; font-weight:700; color:var(--forest);">50 000+</div>
+        <div style="font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:.3rem;">deltakere</div>
+      </div>
+      <div>
+        <div style="font-family:'Fraunces',serif; font-size:2rem; font-weight:700; color:var(--forest);">200+</div>
+        <div style="font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:.3rem;">arrangementer</div>
+      </div>
+      <div>
+        <div style="font-family:'Fraunces',serif; font-size:2rem; font-weight:700; color:var(--forest);">15+</div>
+        <div style="font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:.3rem;">byer</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <h2>Vil du vite <em>mer?</em></h2>
+  <p>Book en uforpliktende prat — vi deler gjerne erfaringene våre.</p>
+  <a href="https://calendly.com/viktorsanden" target="_blank" rel="noopener" class="cta-btn">Book en prat &rarr;</a>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <span>&copy; 2026 Nordic Vagabonds AS</span>
+  <span>Org.nr. 920 812 848</span>
+  <span><a href="/">Hjem</a></span>
+  <span><a href="personvern.html">Personvern</a></span>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const header = document.getElementById('site-header');
+  if (header) {
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+  }
+
+  const blocks = document.querySelectorAll('.media-block');
+  if ('IntersectionObserver' in window) {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('in'), i * 100);
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    blocks.forEach(el => obs.observe(el));
+  } else {
+    blocks.forEach(el => el.classList.add('in'));
+  }
+});
+</script>
+</body>
+</html>
